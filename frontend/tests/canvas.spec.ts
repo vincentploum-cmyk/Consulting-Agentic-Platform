@@ -20,8 +20,8 @@ test.describe('Agent Canvas (landing page)', () => {
 
   test('shows the unassigned task tray', async ({ page }) => {
     await page.goto('/')
-    await expect(page.getByText('Unassigned tasks')).toBeVisible()
-    await expect(page.getByText('Draft login requirements')).toBeVisible()
+    await expect(page.getByRole('heading', { name: 'Unassigned tasks' })).toBeVisible()
+    await expect(page.getByText('Draft login requirements', { exact: true })).toBeVisible()
   })
 
   test('clicking an agent opens its panel with tuning + chat sections', async ({ page }) => {

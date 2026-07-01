@@ -21,10 +21,10 @@ test.describe('SOW intake — upload, extract parameters, deploy team', () => {
 
     // critical parameters were extracted and populated
     await expect(page.getByText('Project parameters', { exact: false })).toBeVisible()
-    await expect(page.getByRole('combobox')).toHaveValue('hybrid')
+    await expect(page.getByLabel('Delivery approach')).toHaveValue('hybrid')
 
     // the team is shown, derived from the parameters
-    await expect(page.getByText('Recommended team', { exact: false })).toBeVisible()
+    await expect(page.getByRole('heading', { name: /Recommended team/ })).toBeVisible()
     await expect(page.getByText('UX Agent', { exact: true })).toBeVisible()
 
     // recompute, then deploy

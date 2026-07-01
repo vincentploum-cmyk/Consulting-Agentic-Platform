@@ -220,10 +220,7 @@ async def approve_review(project_id: str, feedback: str = "") -> bool:
 async def _resume_deploy(orch, project_id: str, state: dict, feedback: str) -> None:
     """Run the TEST deploy after review sign-off, then PAUSE for the production gate."""
     try:
-        state["review_approved"] = True
-        if feedback:
-            state["review_feedback"] = feedback
-        update = await orch._run_stage_deploy(state)
+        update = await orch.resume_after_review(state, feedback=feedback)
         state.update(update)
 
         deploy_arts = [a for a in state.get("artifacts", []) if a.get("stage") == "deploy"]
@@ -255,9 +252,7 @@ async def _resume_deploy_prod(orch, project_id: str, state: dict, feedback: str)
     """Run the PRODUCTION deploy after the prod sign-off, persist its artifact, and finish."""
     _pending_prod.pop(project_id, None)
     try:
-        if feedback:
-            state["prod_feedback"] = feedback
-        update = await orch._run_stage_deploy_prod(state)
+        update = await orch.resume_after_prod_approval(state, feedback=feedback)
         state.update(update)
 
         prod_arts = [a for a in state.get("artifacts", []) if a.get("stage") == "deploy_prod"]

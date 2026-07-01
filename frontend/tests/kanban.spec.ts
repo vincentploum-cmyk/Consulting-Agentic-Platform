@@ -18,7 +18,7 @@ test.describe('Project view, kanban board, and the workflow gate', () => {
   test('shows the board and the Run full workflow control', async ({ page }) => {
     await page.goto('/project/p1')
     await expect(page.getByRole('button', { name: /Run full workflow/ })).toBeVisible()
-    await expect(page.getByText('Generate PRD')).toBeVisible()
+    await expect(page.getByRole('heading', { name: 'Generate PRD' })).toBeVisible()
   })
 
   test('back link returns to the Projects list', async ({ page }) => {

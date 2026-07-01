@@ -747,10 +747,31 @@ class WerkOrchestrator:
                 break
 
         if not state.get("error") and state.get("review_approved"):
-            update = await self._run_stage_deploy(state)
+            update = await self.resume_after_review(state)
             state.update(update)
 
         return state
+
+    async def resume_after_review(
+        self,
+        state: OrchestratorState,
+        feedback: str = "",
+    ) -> dict:
+        """Resume the workflow from the review gate into the test deploy stage."""
+        state["review_approved"] = True
+        if feedback:
+            state["review_feedback"] = feedback
+        return await self._run_stage_deploy(state)
+
+    async def resume_after_prod_approval(
+        self,
+        state: OrchestratorState,
+        feedback: str = "",
+    ) -> dict:
+        """Resume the workflow from the production gate into the production deploy stage."""
+        if feedback:
+            state["prod_feedback"] = feedback
+        return await self._run_stage_deploy_prod(state)
 
     # ── Review Approval (Human-in-the-Loop) ──────────────────────────────────
 

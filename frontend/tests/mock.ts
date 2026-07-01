@@ -27,16 +27,16 @@ export async function setupMocks(page: Page, opts: { tasks?: unknown[] } = {}) {
   await page.route('**/api/v1/auth/login', (route) =>
     route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ access_token: 'test-token', token_type: 'bearer', expires_in_minutes: 60 }) }),
   )
-  await page.route('**/api/v1/agents/', (route) =>
+  await page.route(/\/api\/v1\/agents\/?(?:\?.*)?$/, (route) =>
     route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ agents: AGENTS }) }),
   )
   await page.route('**/api/v1/agents/*/chat', (route) =>
     route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ agent_id: 'a-req', agent_name: 'Requirements Agent', role: 'requirements', reply: 'Here is how I would approach it.', source: 'persona' }) }),
   )
-  await page.route('**/api/v1/projects/', (route) =>
+  await page.route(/\/api\/v1\/projects\/?(?:\?.*)?$/, (route) =>
     route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ projects: PROJECTS }) }),
   )
-  await page.route('**/api/v1/tasks/**', (route) =>
+  await page.route(/\/api\/v1\/tasks(?:\/.*)?(?:\?.*)?$/, (route) =>
     route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ tasks }) }),
   )
   const SOW_AGENTS = [
