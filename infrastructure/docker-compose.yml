@@ -86,12 +86,13 @@ services:
     ports:
       - "8000:8000"
     environment:
+      # Service-host URLs must override the localhost values from ../.env.
       DATABASE_URL: postgresql+asyncpg://postgres:${POSTGRES_PASSWORD:-postgres}@postgres:5432/werk
       REDIS_URL: redis://:${REDIS_PASSWORD:-}@redis:6379/0
-      SECRET_KEY: ${SECRET_KEY:-werk-dev-secret-key-change-in-production}
-      DEBUG: ${DEBUG:-false}
-    # LLM / Ollama config (USE_OLLAMA, OLLAMA_BASE_URL, OLLAMA_MODEL, API keys)
-    # come from ../.env so they aren't overridden here.
+    # SECRET_KEY, DEBUG, and the LLM / Ollama config (USE_OLLAMA, OLLAMA_BASE_URL,
+    # OLLAMA_MODEL, API keys) come from ../.env. Keep them out of `environment:` —
+    # entries there override env_file, and ${VAR} substitution reads the shell,
+    # not ../.env, so a default here would silently win over the user's .env.
     env_file:
       - ../.env
     depends_on:

@@ -14,7 +14,6 @@ from app.schemas import (
     TaskResponse,
     TaskListResponse,
     MessageResponse,
-    ALLOWED_TRANSITIONS,
 )
 from app.services import task_service, llm, artifact_service, workspace_service, retrieval_service
 from app.api.ws import broadcast_event

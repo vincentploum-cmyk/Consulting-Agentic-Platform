@@ -40,3 +40,5 @@ Thumbs.db
 
 # Transient filesystem artifacts
 .fuse_hidden*
+# TLS certs are generated locally (infrastructure/scripts/generate_certs.sh) — never commit them
+infrastructure/nginx/ssl/

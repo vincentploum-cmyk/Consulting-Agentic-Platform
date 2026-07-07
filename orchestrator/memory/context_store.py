@@ -2,7 +2,6 @@
 
 from typing import Any, Optional, Dict
 from datetime import datetime, timezone
-import json
 
 
 class ContextStore:

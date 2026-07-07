@@ -11,11 +11,10 @@ Human-in-the-loop review gates pause the workflow at each sign-off point.
 from __future__ import annotations
 
 import enum
-import json
 import logging
-from dataclasses import dataclass, field, asdict
+from dataclasses import dataclass, field
 from datetime import datetime, timezone
-from typing import Any, Awaitable, Callable, Optional, Literal
+from typing import Awaitable, Callable, Optional, Literal
 
 # LangGraph imports (lightweight — no heavy dependencies beyond langgraph-core)
 try:

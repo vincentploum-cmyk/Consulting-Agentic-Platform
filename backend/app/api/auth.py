@@ -2,10 +2,9 @@
 Auth API routes: login, register, token refresh.
 """
 
-from datetime import timedelta
 from typing import Any
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, HTTPException, status
 from pydantic import BaseModel
 
 from app.core.config import settings

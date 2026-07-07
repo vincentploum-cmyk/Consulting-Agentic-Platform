@@ -1,4 +1,12 @@
+from pydantic import model_validator
 from pydantic_settings import BaseSettings
+
+# Known non-secrets shipped in this repo / .env.example. Refusing to start with one of
+# these outside debug mode prevents deployments with forgeable JWTs.
+_PLACEHOLDER_SECRET_KEYS = {
+    "werk-dev-secret-key-change-in-production",
+    "change-this-to-a-random-64-char-string",
+}
 
 
 class Settings(BaseSettings):
@@ -56,6 +64,15 @@ class Settings(BaseSettings):
     # Agent config
     max_agent_concurrency: int = 5
     agent_timeout_seconds: int = 300
+
+    @model_validator(mode="after")
+    def _require_real_secret_key(self) -> "Settings":
+        if not self.debug and self.secret_key in _PLACEHOLDER_SECRET_KEYS:
+            raise RuntimeError(
+                "SECRET_KEY is a known placeholder. Generate one (e.g. `openssl rand -hex 32`) "
+                "and set it in .env before running with DEBUG=false."
+            )
+        return self
 
     class Config:
         env_file = ".env"

@@ -7,7 +7,6 @@ triggering builds, running health checks, and managing rollout stages.
 
 from __future__ import annotations
 
-import json
 import os
 import subprocess
 import time
@@ -232,7 +231,7 @@ class CICDPipeline:
             return f"https://staging-{uuid.uuid4().hex[:8]}.werk.dev"
 
         elif environment == Environment.PRODUCTION:
-            return f"https://app.werk.dev"
+            return "https://app.werk.dev"
 
         return "http://localhost:8000"
 

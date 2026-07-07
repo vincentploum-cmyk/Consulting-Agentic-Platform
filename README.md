@@ -1,5 +1,9 @@
 # Werk Platform
 
+[![CI — Backend](https://github.com/vincentploum-cmyk/Consulting-Agentic-Platform/actions/workflows/ci-backend.yml/badge.svg)](https://github.com/vincentploum-cmyk/Consulting-Agentic-Platform/actions/workflows/ci-backend.yml)
+[![CI — Frontend](https://github.com/vincentploum-cmyk/Consulting-Agentic-Platform/actions/workflows/ci-frontend.yml/badge.svg)](https://github.com/vincentploum-cmyk/Consulting-Agentic-Platform/actions/workflows/ci-frontend.yml)
+[![Security Scan](https://github.com/vincentploum-cmyk/Consulting-Agentic-Platform/actions/workflows/security-scan.yml/badge.svg)](https://github.com/vincentploum-cmyk/Consulting-Agentic-Platform/actions/workflows/security-scan.yml)
+
 An AI-orchestrated consulting delivery platform. Upload a signed Statement of Work and the
 platform staffs a tailored team of specialized agents, lets a consultant configure each one,
 runs the delivery lifecycle, and produces downloadable deliverables — driven by a **local model**
@@ -42,12 +46,15 @@ selector to switch between the global roster and any engagement's deployed team.
 ## Quick start
 
 ```bash
+cp .env.example .env                              # defaults work as-is (local model, debug mode)
 cd infrastructure
+./scripts/generate_certs.sh                       # self-signed TLS certs for nginx (never committed)
 docker-compose up -d --build
 docker-compose exec ollama ollama pull llama3.2   # one-time: the local model
 ```
 
-Then open **http://localhost:5173**. The default login is wired automatically (`admin`).
+Then open **http://localhost:5173**. The default login is wired automatically (`admin` — demo
+seed data; the backend refuses to start with a placeholder `SECRET_KEY` outside debug mode).
 
 Want to try it immediately? Click **Deploy from SOW** on the canvas and upload
 `docs/SAMPLE_SOW.md`. See `WALKTHROUGH.md` for the full happy path.
@@ -69,7 +76,7 @@ orchestrator/     LangGraph-or-fallback 7-stage workflow engine
 infrastructure/   docker-compose (postgres, redis, minio, ollama, backend, frontend, nginx)
 docs/             PRD, design, architecture, sample SOW
 ARCHITECTURE.md   System architecture overview
-TESTING.md        Test suite (34 backend tests + Playwright specs)
+TESTING.md        Test suite (59 backend tests + Playwright specs)
 ORGANIZATION.md   How the flat cto.new export was organized
 ```
 
@@ -89,7 +96,7 @@ ORGANIZATION.md   How the flat cto.new export was organized
 
 ```bash
 bash infrastructure/scripts/run_tests.sh     # backend (offline) + Playwright
-cd backend && python -m pytest tests/        # backend only — 34 tests, ~6s, no external services
+cd backend && python -m pytest tests/        # backend only — 59 tests, ~12s, no external services
 ```
 
 See `TESTING.md`.

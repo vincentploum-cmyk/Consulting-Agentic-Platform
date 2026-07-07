@@ -2,11 +2,10 @@
 Auth middleware: FastAPI dependency injection for JWT authentication and RBAC.
 """
 
-from typing import Optional, List
+from typing import Optional
 
 from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-from jose import JWTError
 
 from app.core.security import (
     decode_access_token,

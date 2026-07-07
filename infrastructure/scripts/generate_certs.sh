@@ -3,8 +3,10 @@
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-KEY_FILE="$SCRIPT_DIR/werk.key"
-CRT_FILE="$SCRIPT_DIR/werk.crt"
+SSL_DIR="$SCRIPT_DIR/../nginx/ssl"   # where docker-compose mounts /etc/nginx/ssl from
+mkdir -p "$SSL_DIR"
+KEY_FILE="$SSL_DIR/werk.key"
+CRT_FILE="$SSL_DIR/werk.crt"
 
 if [ -f "$KEY_FILE" ] && [ -f "$CRT_FILE" ]; then
     echo "SSL certificates already exist. Skipping generation."

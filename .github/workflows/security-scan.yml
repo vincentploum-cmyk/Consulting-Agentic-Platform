@@ -2,11 +2,17 @@ name: Security Scan
 on:
   schedule:
     - cron: '0 6 * * 1'  # Every Monday at 6 AM
+  workflow_dispatch:
   push:
     branches: [main]
     paths:
       - 'backend/requirements.txt'
       - 'frontend/package.json'
+      - '.github/workflows/security-scan.yml'
+
+permissions:
+  contents: read
+  security-events: write  # for the Trivy SARIF upload
 
 jobs:
   scan:
@@ -20,11 +26,13 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Install safety (dependency scanner)
-        run: pip install safety
+      - name: Install pip-audit (dependency scanner)
+        run: pip install pip-audit
 
       - name: Scan Python dependencies
-        run: safety check -r backend/requirements.txt --full-report
+        # --no-deps: audit the exact pins in requirements.txt (all pinned);
+        # transitive deps are covered by the Trivy fs scan below.
+        run: pip-audit -r backend/requirements.txt --no-deps --disable-pip
 
       - name: Set up Node.js 20
         uses: actions/setup-node@v4

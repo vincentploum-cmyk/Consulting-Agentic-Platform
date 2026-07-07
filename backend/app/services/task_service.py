@@ -5,7 +5,7 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.db_models import Task
-from app.schemas import VALID_TASK_STATUSES, ALLOWED_TRANSITIONS
+from app.schemas import ALLOWED_TRANSITIONS
 
 
 async def list_tasks(db: AsyncSession, project_id: Optional[str] = None) -> list[Task]:
